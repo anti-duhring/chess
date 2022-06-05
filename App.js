@@ -1,18 +1,23 @@
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import Board from './components/Board';
+import Board from './src/components/Board';
+import { ChessGameContextProvider } from './src/components/Context/ChessGameContext';
+import Options from './src/components/Options';
 
 const BACKGROUND = '#161512';
 
 export default function App() {
   return (
+    <ChessGameContextProvider>
     <View style={styles.container}>
       <Board />
+      <Options />
       <StatusBar
           animated={true}
           backgroundColor={BACKGROUND}
           barStyle="light-content"
          />
     </View>
+    </ChessGameContextProvider>
   );
 }
 

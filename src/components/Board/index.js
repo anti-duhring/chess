@@ -1,14 +1,16 @@
 import { View, Dimensions } from "react-native";
 import Background from "../Background";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useContext } from "react";
 import { Chess } from 'chess.js'
 import Piece from "../Piece";
 import { SIZE } from "../Piece";
+import { ChessGameContext } from "../Context/ChessGameContext";
 
 const { width } = Dimensions.get("window");
 
 const Board = () => {
-    const chess = useRef(new Chess);
+    const {chess, state, setState, onTurn} = useContext(ChessGameContext);
+    /*const chess = useRef(new Chess);
     const [state, setState] = useState({
         player: 'w',
         board: chess.current.board(),
@@ -20,7 +22,7 @@ const Board = () => {
     board: chess.current.board()})
       },
       [chess.current, state.player],
-    )
+    )*/
     
 
     useEffect(() => {

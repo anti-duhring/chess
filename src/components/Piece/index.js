@@ -8,18 +8,18 @@ const { width } = Dimensions.get('window');
 export const SIZE = width / 8;
 
 export const PIECES= {
-    br: require('../../assets/br.png'),
-    bb: require('../../assets/bb.png'),
-    bk: require('../../assets/bk.png'),
-    bn: require('../../assets/bn.png'),
-    bp: require('../../assets/bp.png'),
-    bq: require('../../assets/bq.png'),
-    wb: require('../../assets/wb.png'),
-    wk: require('../../assets/wk.png'),
-    wn: require('../../assets/wn.png'),
-    wp: require('../../assets/wp.png'),
-    wq: require('../../assets/wq.png'),
-    wr: require('../../assets/wr.png')
+    br: require('../../../assets/br.png'),
+    bb: require('../../../assets/bb.png'),
+    bk: require('../../../assets/bk.png'),
+    bn: require('../../../assets/bn.png'),
+    bp: require('../../../assets/bp.png'),
+    bq: require('../../../assets/bq.png'),
+    wb: require('../../../assets/wb.png'),
+    wk: require('../../../assets/wk.png'),
+    wn: require('../../../assets/wn.png'),
+    wp: require('../../../assets/wp.png'),
+    wq: require('../../../assets/wq.png'),
+    wr: require('../../../assets/wr.png')
 }
 const Piece = ({id, position, chess, onTurn, enabled}) => {
     const isGestureActive = useSharedValue(false);
