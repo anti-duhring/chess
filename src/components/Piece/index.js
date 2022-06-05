@@ -1,8 +1,9 @@
 import { Image, StyleSheet, Dimensions, View } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, runOnJS, withTiming } from 'react-native-reanimated'
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import {useCallback} from 'react'
+import {useCallback, useContext} from 'react'
 import { toPosition, toTranslation } from "../Notation";
+import { ChessGameContext } from "../Context/ChessGameContext";
 
 const { width } = Dimensions.get('window');
 export const SIZE = width / 8;
@@ -22,6 +23,7 @@ export const PIECES= {
     wr: require('../../../assets/wr.png')
 }
 const Piece = ({id, position, chess, onTurn, enabled}) => {
+    const { soundMove } = useContext(ChessGameContext)
     const isGestureActive = useSharedValue(false);
     const offsetX = useSharedValue(0);
     const offsetY = useSharedValue(0);
@@ -37,6 +39,11 @@ const Piece = ({id, position, chess, onTurn, enabled}) => {
             isGestureActive.value = false;
         });
         if(move) {
+            let sound = 0;
+            if(move.captured) {
+                sound = 1;
+            }
+            soundMove(sound);
             chess.move(move);
             onTurn();
         }
