@@ -9,36 +9,31 @@ import { ChessGameContext } from "../Context/ChessGameContext";
 const { width } = Dimensions.get("window");
 
 const Board = () => {
-    const {chess, state, setState, onTurn} = useContext(ChessGameContext);
-    /*const chess = useRef(new Chess);
-    const [state, setState] = useState({
-        player: 'w',
-        board: chess.current.board(),
-    })
-
-    const onTurn = useCallback(
-      () => {
-        setState({player: state.player == 'w' ? 'b' : 'w',
-    board: chess.current.board()})
-      },
-      [chess.current, state.player],
-    )*/
-    
-
+    const {chess, state, setState, onTurn, boardView} = useContext(ChessGameContext);
+    const [view, setView] = useState(boardView)
+  
     useEffect(() => {
-        console.log(chess.current.pgn())
-    },[])
-    
+        setView(boardView)
+        console.log(boardView)
+    },[boardView])
+
     return ( 
         <View style={{width:width, height: width}}>
-            <Background />
-            {
-                state.board.map((row, index) => row.map((square, squareIndex) => {
+            <Background boardView={view} />
+
+            {(view=='w') ?
+            state.board.map((row, index) => row.map((square, squareIndex) => {
                     if(!square) return
 
                     return <Piece key={index + squareIndex} id={`${square.color}${square.type}`} position={{x: squareIndex * SIZE, y: index * SIZE}} chess={chess.current} onTurn={onTurn} enabled={state.player === square.color} />
 
-                }))
+                })) :
+            state.board.reverse().map((row, index) => row.reverse().map((square, squareIndex) => {
+                if(!square) return
+
+                return <Piece key={index + squareIndex} id={`${square.color}${square.type}`} position={{x: squareIndex * SIZE, y: index * SIZE}} chess={chess.current} onTurn={onTurn} enabled={state.player === square.color} />
+
+            }))
             }
         </View> 
     );

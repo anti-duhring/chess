@@ -10,7 +10,7 @@ const { width } = Dimensions.get('window')
 const { height } = Dimensions.get('window')
 
 const Options = () => {
-    const { chess, state, setState, onTurn } = useContext(ChessGameContext);
+    const { chess, state, setState, onTurn,flipBoard } = useContext(ChessGameContext);
     const [value, setValue] = useState(0);
     const [optionsDisplay, setOptionsDisplay] = useState('none')
 
@@ -44,6 +44,10 @@ const Options = () => {
                         <MaterialCommunityIcons name="checkerboard" size={20} color="white" />
                         <Text style={styles.optionText}>Copy game</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.optionButton} onPress={flipBoard}>
+                    <MaterialCommunityIcons name="restart" size={20} color="white" />
+                        <Text style={styles.optionText}>Flip board</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flex:1,marginTop:5,marginRight:10,alignSelf:'flex-start',alignItems:'flex-end'}}>
                     <TouchableOpacity onPress={toggleOptions}>
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
         position:'absolute',
         backgroundColor:'#161512',
         width:width -100,
-        height:100,
+        height:150,
         justifyContent:'center',
         alignItems:'center',
         top: -(width/2),

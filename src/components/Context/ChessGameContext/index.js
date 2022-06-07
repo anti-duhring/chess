@@ -1,9 +1,29 @@
 import { createContext, useRef, useState, useCallback, useEffect } from "react";
 import { Chess } from "chess.js";
-import TrackPlayer, { RepeatMode } from 'react-native-track-player';
-
+import Sound from 'react-native-sound';
+import move from '../../../../assets/sounds/public_sound_standard_Move.mp3'
+import capture from '../../../../assets/sounds/public_sound_standard_Capture.mp3'
 
 export const ChessGameContext = createContext();
+
+Sound.setCategory('Playback');
+var moveSound = new Sound(move, Sound.MAIN_BUNDLE, (error) => {
+    if (error) {
+      console.log('failed to load the sound', error);
+      return;
+    }
+    // when loaded successfully
+    console.log('duration in seconds: ' + moveSound.getDuration() + 'number of channels: ' + moveSound.getNumberOfChannels());
+  });
+
+  var captureSound = new Sound(capture, Sound.MAIN_BUNDLE, (error) => {
+    if (error) {
+      console.log('failed to load the sound', error);
+      return;
+    }
+    // when loaded successfully
+    console.log('duration in seconds: ' + moveSound.getDuration() + 'number of channels: ' + moveSound.getNumberOfChannels());
+  });
 
 export const ChessGameContextProvider = ({children}) => {
     const chess = useRef(new Chess);
@@ -11,55 +31,29 @@ export const ChessGameContextProvider = ({children}) => {
         player: 'w',
         board: chess.current.board(),
     })
+    const [boardView, setBoardView] = useState('w')
 
     const onTurn = useCallback(() => {
         setState({player: state.player == 'w' ? 'b' : 'w',
         board: chess.current.board()})
     },[chess.current, state.player])
 
-    const loadSound = async() => {
-        const move = {
-            url: require('../../../../assets/sounds/public_sound_standard_Move.mp3'),
-            title: 'Move',
-            duration: 1,
+    const soundMove = (_move) => {
+        if(_move == 0) {
+            moveSound.play();
         }
-        const capture = {
-            url: require('../../../../assets/sounds/public_sound_standard_Capture.mp3'),
-            title: 'Capture',
-            duration: 1,
-        }
-
-        try {
-            await TrackPlayer.setupPlayer()
-            await TrackPlayer.add([move, capture]);
-            await TrackPlayer.setRepeatMode(1);
-            //TrackPlayer.setRepeatMode('Track');
-            //await sound.current.loadAsync(require('../../../../assets/sounds/public_sound_standard_Move.mp3'));
-            // Don't forget to unload the sound from memory
-            // when you are done using the Sound object
-        } catch (error) {
-            // An error occurred!
-            console.log('Error:',error)
-        } finally {
-            console.log('Loaded')
+        else if(_move == 1) {
+            captureSound.play();
         }
     }
 
-    const soundMove = async(_type) => {
-        await TrackPlayer.skip(_type);
-        TrackPlayer.play();
-        setTimeout(() => {TrackPlayer.pause()},250)
-        
-        // Your sound is playing!
-    }
-
-    useEffect(() => {
-        loadSound();
-    },[])
+    const flipBoard = useCallback(() => {
+        setBoardView((boardView == 'w') ? 'b' : 'w');
+    },[boardView])
 
 
     return(
-        <ChessGameContext.Provider value={{chess, state, setState, onTurn, soundMove}}>
+        <ChessGameContext.Provider value={{chess, state, setState, onTurn, soundMove, boardView, setBoardView, flipBoard}}>
             {children}
         </ChessGameContext.Provider>
     )

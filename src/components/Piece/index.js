@@ -39,11 +39,11 @@ const Piece = ({id, position, chess, onTurn, enabled}) => {
             isGestureActive.value = false;
         });
         if(move) {
-            let sound = 0;
+            let move_type = 0;
             if(move.captured) {
-                sound = 1;
+                move_type = 1;
             }
-            soundMove(sound);
+            soundMove(move_type);
             chess.move(move);
             onTurn();
         }
